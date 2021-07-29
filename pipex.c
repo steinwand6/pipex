@@ -5,7 +5,6 @@ void	ft_execve(char *cmd, char *paths[], char *envp[])
 	char	**split_cmd;
 	char	*build_cmd;
 
-	errno = 0;
 	split_cmd = ft_split(cmd, ' ');
 	if (!paths)
 		build_cmd = ft_strdup(split_cmd[0]);
@@ -34,6 +33,7 @@ void	ft_exec_with_pipe(int in, char *cmd, char *paths[], char *envp[])
 	}
 	close(pipefd[1]);
 	dup2(pipefd[0], 0);
+	close(pipefd[0]);
 	waitpid(pid, NULL, 0);
 }
 
@@ -52,6 +52,7 @@ void	pipex(char *argv[], char *envp[], int in, int out)
 	if (out != -1)
 	{
 		dup2(out, 1);
+		close(out);
 		ft_execve(*argv, paths, envp);
 	}
 	ft_free_all(paths);
