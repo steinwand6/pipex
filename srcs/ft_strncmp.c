@@ -6,11 +6,11 @@
 /*   By: tishigak <tishigak@student.42toky...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 03:58:52 by tishigak          #+#    #+#             */
-/*   Updated: 2021/04/17 01:53:25 by tishigak         ###   ########.fr       */
+/*   Updated: 2021/08/02 21:33:17 by tishigak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "pipex.h"
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
