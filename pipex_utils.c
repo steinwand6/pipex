@@ -7,14 +7,14 @@ char	*ft_free_all(char **ptr)
 	i = 0;
 	while (ptr[i])
 	{
-		ptr[i] = NULL;
-		free(ptr[i++]);
+		free(ptr[i]);
+		i++;
 	}
 	free(ptr);
 	return (NULL);
 }
 
-int	ft_openfile(char *filename, int oflag, char *progname)
+int	ft_openfile(char *filename, int oflag, char *prog_name)
 {
 	int	fd;
 
@@ -25,14 +25,14 @@ int	ft_openfile(char *filename, int oflag, char *progname)
 		fd = open(filename, oflag);
 	if (fd == -1)
 	{
-		ft_putstr_fd(progname, 2);
+		ft_putstr_fd(prog_name, 2);
 		ft_putstr_fd(": ", 2);
 		perror(filename);
 	}
 	return (open(filename, oflag));
 }
 
-char	*ft_get_el_in_env(char *envp[], char *key)
+char	*ft_get_el_in_env(char *const *envp, char *key)
 {
 	int	start;
 	int	i;
@@ -48,10 +48,10 @@ char	*ft_get_el_in_env(char *envp[], char *key)
 	}
 	if (start)
 		return (0);
-	return (ft_strdup(envp[i] + start));
+	return (ft_strdup(envp[i] + ft_strlen(key)));
 }
 
-char	**ft_get_array_in_env(char *envp[], char *key, char sep)
+char	**ft_get_array_in_env(char *const *envp, char *key, char sep)
 {
 	char	*str;
 	char	**array;
