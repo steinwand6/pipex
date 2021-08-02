@@ -19,7 +19,6 @@ char	**ft_get_array_in_env(char *const *envp, char *key, char sep);
 char	*assemble_excutable_command(char *cmd, char *paths[]);
 int		ft_exec_with_pipe(int in, char *cmd, char *paths[], char *prog_name);
 int		ft_read_heredoc(int fd, char *limit);
-
 size_t	ft_strlen(const char *str);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strdup(char *src);
@@ -30,5 +29,7 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 char	**ft_split(char const *str, char c);
 void	ft_puterror(char *site, int to_exit, char *prog_name);
+int		ft_gnl_split(char **strage, char **line);
+char	*ft_gnl_strchr(const char *s, int c);
 
 #endif

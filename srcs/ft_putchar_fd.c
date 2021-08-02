@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tishigak <tishigak@student.42toky...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/26 01:49:28 by tishigak          #+#    #+#             */
-/*   Updated: 2021/08/01 19:31:16 by tishigak         ###   ########.fr       */
+/*   Created: 2021/04/08 03:24:26 by tishigak          #+#    #+#             */
+/*   Updated: 2021/08/02 20:15:29 by tishigak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "pipex.h"
 
-# include <unistd.h>
-# include <stdlib.h>
-#include "libft.h"
-
-size_t	ft_strlen(const char *str);
-int		get_next_line(int fd, char **line);
-char	*ft_gnl_strchr(const char *s, int c);
-int		ft_gnl_split(char **strage, char **line);
-
-#endif
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}

@@ -5,12 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tishigak <tishigak@student.42toky...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/25 19:52:18 by tishigak          #+#    #+#             */
-/*   Updated: 2021/08/02 15:06:26 by tishigak         ###   ########.fr       */
+/*   Created: 2021/08/02 21:08:17 by tishigak          #+#    #+#             */
+/*   Updated: 2021/08/02 21:09:01 by tishigak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
 #include "pipex.h"
 
 static char	*ft_gnl_strjoin(char *s1, char *s2, size_t len2)

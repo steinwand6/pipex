@@ -1,15 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tishigak <tishigak@student.42toky...>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/08/02 20:06:57 by tishigak          #+#    #+#             */
+/*   Updated: 2021/08/02 21:07:02 by tishigak         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
 void	ft_puterror(char *site, int to_exit, char *prog_name)
 {
 	int	errno;
 
-	if (errno == 14)
+	if (errno == 2)
 	{
 		ft_putstr_fd(prog_name, 2);
 		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(site, 2);
-		ft_putendl_fd(": command not found.", 2);
+		ft_putendl_fd(": command not found", 2);
 	}
 	else if (errno)
 		perror(site);
@@ -21,7 +33,7 @@ void	ft_execve(char *cmd, char *paths[], char *prog_name)
 {
 	char	**split_cmd;
 	char	*build_cmd;
-	int	errno;
+	int		errno;
 
 	errno = 0;
 	split_cmd = ft_split(cmd, ' ');
@@ -32,7 +44,7 @@ void	ft_execve(char *cmd, char *paths[], char *prog_name)
 	else
 		build_cmd = assemble_excutable_command(split_cmd[0], paths);
 	if (!build_cmd)
-		ft_puterror(prog_name, 1, prog_name);
+		ft_puterror(split_cmd[0], 1, prog_name);
 	execve(build_cmd, split_cmd, g_envp);
 	ft_puterror(split_cmd[0], 0, prog_name);
 	ft_free_all(split_cmd);
@@ -64,7 +76,7 @@ int	ft_exec_with_pipe(int in, char *cmd, char *paths[], char *prog_name)
 	return (pipefd[0]);
 }
 
-int    pipex(char *argv[], int in, int out)
+int	pipex(char *argv[], int in, int out)
 {
 	char	**paths;
 	char	*prog_name;
@@ -112,7 +124,6 @@ int	main(int argc, char *argv[], char *envp[])
 		filefd[0] = pipefd[0];
 		filefd[1] = ft_openfile(argv[argc - 1],
 				      O_CREAT | O_APPEND | O_WRONLY, argv[0]);
-
 	}
 	return (pipex(argv, filefd[0], filefd[1]));
 }
