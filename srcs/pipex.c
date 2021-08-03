@@ -6,7 +6,7 @@
 /*   By: tishigak <tishigak@student.42toky...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/02 20:06:57 by tishigak          #+#    #+#             */
-/*   Updated: 2021/08/02 21:07:02 by tishigak         ###   ########.fr       */
+/*   Updated: 2021/08/03 22:25:11 by tishigak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	pipex(char *argv[], int in, int out)
 {
 	char	**paths;
 	char	*prog_name;
+	int		pid;
 
 	prog_name = argv[0];
 	paths = ft_get_array_in_env(g_envp, "PATH=", ':');
@@ -95,8 +96,10 @@ int	pipex(char *argv[], int in, int out)
 		dup2(in, 0);
 		close(out);
 		ft_execve(*argv, paths, prog_name);
-		wait(0);
 	}
+	pid = waitpid(-1, NULL, 0);
+	while (pid)
+		pid = waitpid(-1, NULL, 0);
 	ft_free_all(paths);
 	return (0);
 }
