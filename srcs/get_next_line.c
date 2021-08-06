@@ -6,7 +6,7 @@
 /*   By: tishigak <tishigak@student.42toky...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/02 21:08:17 by tishigak          #+#    #+#             */
-/*   Updated: 2021/08/04 23:08:04 by tishigak         ###   ########.fr       */
+/*   Updated: 2021/08/06 23:35:27 by tishigak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	ft_read_heredoc(t_pi *px_info, int fd)
 		if (result < 0)
 			return (-1);
 		if (!result
-		    || ft_strncmp(line, px_info->limit, length + 1) == 0)
+			|| ft_strncmp(line, px_info->limit, length + 1) == 0)
 		{
 			free(line);
 			break ;

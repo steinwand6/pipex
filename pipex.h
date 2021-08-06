@@ -6,7 +6,7 @@
 /*   By: tishigak <tishigak@student.42toky...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/02 21:23:57 by tishigak          #+#    #+#             */
-/*   Updated: 2021/08/06 22:16:19 by tishigak         ###   ########.fr       */
+/*   Updated: 2021/08/06 23:35:03 by tishigak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,20 @@
 # include <errno.h>
 # include <stdlib.h>
 # include <limits.h>
+# include <sys/wait.h>
 
 typedef struct s_pipexinfo
 {
 	int			in;
-	int			final_out;
+	int			out;
 	int			num_of_cmds;
 	int			is_hd_mode;
-	char			**paths;
-	char			**cmds;
-	char			*prog_name;
-	char			*infile;
-	char			*outfile;
-	char			*limit;
+	char		**paths;
+	char		**cmds;
+	char		*prog_name;
+	char		*infile;
+	char		*outfile;
+	char		*limit;
 }				t_pi;
 
 int		init_info(int argc, char *argv[], t_pi *px_info);

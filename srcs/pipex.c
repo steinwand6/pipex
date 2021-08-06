@@ -6,7 +6,7 @@
 /*   By: tishigak <tishigak@student.42toky...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/02 20:06:57 by tishigak          #+#    #+#             */
-/*   Updated: 2021/08/06 22:17:32 by tishigak         ###   ########.fr       */
+/*   Updated: 2021/08/06 23:33:03 by tishigak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,14 @@ void	ft_execve(t_pi *px_info, int i)
 	ft_check_status(-1, split_cmd[0]);
 }
 
-void	ft_exec_with_pipe(t_pi *px_info, int in, int out, int i)
+void	ft_exec_with_pipe(t_pi *px_info, int in, int *pipefd, int i)
 {
 	int	pid;
 
 	pid = ft_check_status(fork(), NULL);
 	if (pid == 0)
 	{
+		ft_check_status(close(pipefd[0]), px_info->prog_name);
 		if (in != -1)
 		{
 			ft_check_status(dup2(in, 0), px_info->prog_name);
@@ -61,10 +62,10 @@ void	ft_exec_with_pipe(t_pi *px_info, int in, int out, int i)
 		}
 		else
 			exit(-1);
-		if (i + 1 != px_info->num_of_cmds || out != -1)
+		if (i + 1 != px_info->num_of_cmds || pipefd[1] != -1)
 		{
-			ft_check_status(dup2(out, 1), px_info->prog_name);
-			ft_check_status(close(out), px_info->prog_name);
+			ft_check_status(dup2(pipefd[1], 1), px_info->prog_name);
+			ft_check_status(close(pipefd[1]), px_info->prog_name);
 		}
 		else
 			exit(-1);
@@ -72,7 +73,7 @@ void	ft_exec_with_pipe(t_pi *px_info, int in, int out, int i)
 	}
 	if (in != -1)
 		ft_check_status(close(in), px_info->prog_name);
-	ft_check_status(close(out), px_info->prog_name);
+	ft_check_status(close(pipefd[1]), px_info->prog_name);
 }
 
 int	pipex(t_pi *px_info)
@@ -87,16 +88,16 @@ int	pipex(t_pi *px_info)
 	{
 		ft_check_status(pipe(pipefd), px_info->prog_name);
 		if (i + 1 == px_info->num_of_cmds)
-			ft_exec_with_pipe(px_info, in, px_info->final_out, i);
-		else
-			ft_exec_with_pipe(px_info, in, pipefd[1], i);
+		{
+			close(pipefd[1]);
+			pipefd[1] = px_info->out;
+		}
+		ft_exec_with_pipe(px_info, in, pipefd, i);
 		in = pipefd[0];
 		i++;
 	}
 	if (pipefd[0] != -1)
 		ft_check_status(close(pipefd[0]), px_info->prog_name);
-	if (pipefd[1] != -1)
-		ft_check_status(close(pipefd[1]), px_info->prog_name);
 	while (i-- > 0)
 		wait(NULL);
 	ft_free_all(px_info->paths);
@@ -116,13 +117,13 @@ int	main(int argc, char *argv[])
 		ft_check_status(pipe(pipefd), px_info.prog_name);
 		ft_check_status(ft_read_heredoc(&px_info, pipefd[1]), argv[0]);
 		px_info.in = pipefd[0];
-		px_info.final_out = ft_openfile(px_info.outfile,
+		px_info.out = ft_openfile(px_info.outfile,
 				      O_CREAT | O_APPEND | O_WRONLY, argv[0]);
 	}
 	else
 	{
 		px_info.in = ft_openfile(argv[1], O_RDONLY, argv[0]);
-		px_info.final_out = ft_openfile(argv[argc - 1],
+		px_info.out = ft_openfile(argv[argc - 1],
 				O_CREAT | O_TRUNC | O_WRONLY, argv[0]);
 	}
 	return (pipex(&px_info));
