@@ -6,7 +6,7 @@
 /*   By: tishigak <tishigak@student.42toky...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/02 21:08:17 by tishigak          #+#    #+#             */
-/*   Updated: 2021/08/02 21:09:01 by tishigak         ###   ########.fr       */
+/*   Updated: 2021/08/04 23:08:04 by tishigak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,21 +79,22 @@ int	get_next_line(int fd, char **line)
 	return (strage != NULL);
 }
 
-int	ft_read_heredoc(int fd, char *limit)
+int	ft_read_heredoc(t_pi *px_info, int fd)
 {
 	char	*line;
 	int		result;
-	int		row;
+	int		length;
 
 	result = 1;
-	row = 0;
+	length = ft_strlen(px_info->limit);
 	while (1)
 	{
 		ft_putstr_fd("> ", 1);
 		result = get_next_line(0, &line);
 		if (result < 0)
 			return (-1);
-		if (!result || ft_strncmp(line, limit, ft_strlen(limit) + 1) == 0)
+		if (!result
+		    || ft_strncmp(line, px_info->limit, length + 1) == 0)
 		{
 			free(line);
 			break ;

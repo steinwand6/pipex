@@ -6,7 +6,7 @@
 /*   By: tishigak <tishigak@student.42toky...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/02 20:07:07 by tishigak          #+#    #+#             */
-/*   Updated: 2021/08/02 20:07:24 by tishigak         ###   ########.fr       */
+/*   Updated: 2021/08/06 09:50:11 by tishigak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ char	*assemble_excutable_command(char *cmd, char *paths[])
 	int		i;
 
 	i = 0;
+	if (access(cmd, X_OK) == 0)
+		return (ft_strdup(cmd));
 	while (paths[i])
 	{
 		tmp = ft_strjoin(paths[i], "/");

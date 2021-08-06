@@ -6,7 +6,7 @@
 /*   By: tishigak <tishigak@student.42toky...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/02 21:23:57 by tishigak          #+#    #+#             */
-/*   Updated: 2021/08/02 21:24:01 by tishigak         ###   ########.fr       */
+/*   Updated: 2021/08/06 22:16:19 by tishigak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,29 @@
 # include <stdlib.h>
 # include <limits.h>
 
-char *const	*g_envp;
+typedef struct s_pipexinfo
+{
+	int			in;
+	int			final_out;
+	int			num_of_cmds;
+	int			is_hd_mode;
+	char			**paths;
+	char			**cmds;
+	char			*prog_name;
+	char			*infile;
+	char			*outfile;
+	char			*limit;
+}				t_pi;
 
-void	ft_execve(char *cmd, char *paths[], char *prog_name);
+int		init_info(int argc, char *argv[], t_pi *px_info);
+int		ft_check_status(int status, char *name);
+int		ft_read_heredoc(t_pi *px_info, int fd);
+int		pipex(t_pi *px_info);
 char	*ft_free_all(char **ptr);
 int		ft_openfile(char *filename, int oflag, char *prog_name);
 char	*ft_get_el_in_env(char *const *envp, char *key);
 char	**ft_get_array_in_env(char *const *envp, char *key, char sep);
 char	*assemble_excutable_command(char *cmd, char *paths[]);
-int		ft_exec_with_pipe(int in, char *cmd, char *paths[], char *prog_name);
-int		ft_read_heredoc(int fd, char *limit);
 size_t	ft_strlen(const char *str);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strdup(char *src);
