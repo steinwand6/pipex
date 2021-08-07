@@ -6,11 +6,11 @@
 /*   By: tishigak <tishigak@student.42toky...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/02 20:06:57 by tishigak          #+#    #+#             */
-/*   Updated: 2021/08/07 14:19:01 by tishigak         ###   ########.fr       */
+/*   Updated: 2021/08/07 14:24:56 by tishigak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 int	ft_check_status(int status, char *name)
 {
@@ -43,6 +43,7 @@ void	ft_execve(t_pi *px_info, int i)
 		exit(-1);
 	}
 	execve(build_cmd, split_cmd, environ);
+	ft_free_all(split_cmd);
 	ft_check_status(-1, split_cmd[0]);
 }
 
@@ -59,7 +60,7 @@ void	ft_exec_with_pipe(t_pi *px_info, int in, int *pipefd, int i)
 			ft_check_status(dup2(in, 0), px_info->prog_name);
 			ft_check_status(close(in), px_info->prog_name);
 		}
-		if (pipefd[1] != -1)
+		if (i + 1 != px_info->num_of_cmds || pipefd[1] != -1)
 		{
 			ft_check_status(dup2(pipefd[1], 1), px_info->prog_name);
 			ft_check_status(close(pipefd[1]), px_info->prog_name);
@@ -70,8 +71,7 @@ void	ft_exec_with_pipe(t_pi *px_info, int in, int *pipefd, int i)
 	}
 	if (in != -1)
 		ft_check_status(close(in), px_info->prog_name);
-	if (pipefd[1] != -1)
-		ft_check_status(close(pipefd[1]), px_info->prog_name);
+	ft_check_status(close(pipefd[1]), px_info->prog_name);
 }
 
 int	pipex(t_pi *px_info)
@@ -104,13 +104,25 @@ int	pipex(t_pi *px_info)
 
 int	main(int argc, char *argv[])
 {
+	int		pipefd[2];
 	t_pi	px_info;
 
-	if (argc != 5)
+	if (argc < 5)
 		exit(-1);
 	ft_check_status(init_info(argc, argv, &px_info), argv[0]);
-	px_info.in = ft_openfile(argv[1], O_RDONLY, argv[0]);
-	px_info.out = ft_openfile(argv[argc - 1],
-			O_CREAT | O_TRUNC | O_WRONLY, argv[0]);
+	if (px_info.is_hd_mode)
+	{
+		ft_check_status(pipe(pipefd), px_info.prog_name);
+		ft_check_status(ft_read_heredoc(&px_info, pipefd[1]), argv[0]);
+		px_info.in = pipefd[0];
+		px_info.out = ft_openfile(px_info.outfile,
+				      O_CREAT | O_APPEND | O_WRONLY, argv[0]);
+	}
+	else
+	{
+		px_info.in = ft_openfile(argv[1], O_RDONLY, argv[0]);
+		px_info.out = ft_openfile(argv[argc - 1],
+				O_CREAT | O_TRUNC | O_WRONLY, argv[0]);
+	}
 	return (pipex(&px_info));
 }

@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tishigak <tishigak@student.42toky...>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/02 21:23:57 by tishigak          #+#    #+#             */
-/*   Updated: 2021/08/07 12:19:04 by tishigak         ###   ########.fr       */
+/*   Updated: 2021/08/07 12:33:42 by tishigak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
 
 # include <unistd.h>
 # include <string.h>
@@ -38,6 +38,7 @@ typedef struct s_pipexinfo
 
 int		init_info(int argc, char *argv[], t_pi *px_info);
 int		ft_check_status(int status, char *name);
+int		ft_read_heredoc(t_pi *px_info, int fd);
 int		pipex(t_pi *px_info);
 char	*ft_free_all(char **ptr);
 int		ft_openfile(char *filename, int oflag, char *prog_name);
